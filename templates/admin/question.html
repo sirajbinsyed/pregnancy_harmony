@@ -1,0 +1,158 @@
+{% extends "./admin/base.html" %}
+{% block content %}
+<main class="dash-content">
+    <div class="container-fluid">
+        <div class="row dash-row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="easion-card-title">Add Question Form </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Form for adding/updating questions -->
+                        <form method="POST" action="/admin-question">
+                            <input type="hidden" name="id" value="{{ question_to_edit.question_id if question_to_edit else '' }}">
+                            <div class="form-group">
+                                <label for="question_category">Category</label>
+                                <select class="form-control" id="category" name="question_category" required>
+                                    <option value="">Select a category</option>
+                                    {% for category in select_category %}
+                                        <option value="{{ category.name }}"
+                                                {% if question_to_edit and question_to_edit.category == category.name %}selected{% endif %}>
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="question_question">Question</label>
+                                <input type="text" class="form-control" id="question" name="question" 
+                                       value="{{ question_to_edit.question if question_to_edit else '' }}" 
+                                       placeholder="Enter the question" required>
+                            </div>
+                            <div class="form-group">
+                                <div class="d-flex justify-content-between align-items-center">
+                                <label for="details">Answer</label>
+                                <button type="button" id="addAnswer" class="btn btn-secondary btn-sm">Add +</button>
+                                </div>
+                               
+                                <!-- Answer Fields -->
+                                {% if answers_to_edit %}
+                                {% for answer in answers_to_edit %}
+                                <div id="answerFields">
+                                    
+                                    <div class="d-flex align-items-center mt-2">
+                                        <!-- Hidden field to store answer ID -->
+                                        <input type="hidden" name="upd_answer_ids[]" value="{{ answer.id }}">
+                                        
+                                        <!-- Text field for answer -->
+                                        <input class="form-control" id="answer" name="upd_answer[]" placeholder="Enter the answer" required
+                                            value="{{ answer.answer | trim }}">
+                                       
+                                            <a href="{{ url_for('delete_answer', question_id=answer.question_id, answer_id=answer.id) }}"  class="btn btn-danger btn-sm" style="margin: 5px;">Delete</a>
+                                       
+                                        
+                                </div>
+    
+                                    {% endfor %}
+                                {% else %}
+                                    <div id="answerFields">
+                                    <input class="form-control mt-2" id="answer" name="answer[]" placeholder="Enter the answer" required>
+                                        {{ question_to_edit.answer if question_to_edit else '' | trim }}
+                                    </input>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <button id="submit" type="submit" class="btn btn-primary" style="margin: 15px;">{{ 'Update' if question_to_edit else 'Submit' }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table to list questions -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="easion-card-title">Questions Table</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-in-card">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">catagory</th>
+                                    <th scope="col">question</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question in questions %}
+                                <tr>
+                                    <td>{{ question.question_id}}</td>
+                                    <td>{{ question.category }}</td>
+                                    <td>{{ question.question }}</td>
+                                    <td>
+                                        <a href="{{ url_for('adminquestion', edit=question.question_id) }}" class="btn btn-info btn-sm">View and Edit</a>
+                                        
+                                        <form action="{{ url_for('delete_question', question_id=question.question_id) }}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+     
+     document.getElementById('addAnswer').addEventListener('click', function () {
+        const answerDiv = document.getElementById('answerFields');
+
+       
+        const newAnswerDiv = document.createElement('div');
+        newAnswerDiv.classList.add('answer-field');
+
+       
+        const newAnswerField = document.createElement('textarea');
+        newAnswerField.classList.add('form-control', 'mt-2');
+        newAnswerField.name = 'answer[]';
+        newAnswerField.placeholder = 'Enter additional answer';
+        newAnswerField.required = true;
+
+        
+        const lineBreak = document.createElement('br');
+        
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'ml-2');
+        removeButton.innerText = 'Delete';
+        removeButton.style.margin = '6px';
+        removeButton.addEventListener('click', function () {
+            newAnswerDiv.remove();
+        });
+
+       
+        newAnswerDiv.appendChild(newAnswerField);
+
+        newAnswerDiv.appendChild(removeButton);
+         
+        
+        const submitButton = document.querySelector('#submit');
+
+        // Insert new answer div before the submit button
+        submitButton.parentNode.insertBefore(newAnswerDiv, submitButton);
+    });
+</script>
+{% endblock %}

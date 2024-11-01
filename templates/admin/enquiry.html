@@ -1,0 +1,53 @@
+{% extends "./admin/base.html" %}
+{% block content %}
+<main class="dash-content">
+    <div class="container-fluid">
+        <!-- Table to list enquiries -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="easion-card-title">Enquiries Table</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-in-card">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">User Name</th>
+                                    <th scope="col">User Age</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Enquiry</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for enquiry in enquiries %}
+                                <tr>
+                                    <th scope="row">{{ enquiry.enquiry_id }}</th>
+                                    <td>{{ enquiry.user_name }}</td>
+                                    <td>{{ enquiry.user_age }}</td>
+                                    <td>{{ enquiry.category_name }}</td>
+                                    <td>{{ enquiry.subject }}</td>
+                                    <td>{{ enquiry.enquiry }}</td>
+                                    <td>
+                                        
+        
+                                        <a href="{{ url_for('reply_enquiry', enquiry_id=enquiry.enquiry_id) }}" class="btn btn-info btn-sm">reply</a>
+                                
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

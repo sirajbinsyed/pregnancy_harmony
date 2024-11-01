@@ -1,0 +1,120 @@
+{% extends "./user/base.html" %}
+{% block content %}
+<style>
+    .faq-item {
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    .faq-question {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .faq-answer {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+</style>
+<!-- Tips Section -->
+<section class="tips-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2 class="section-title">Month by Month Tips</h2>
+                <p class="section-subtitle">Get helpful tips and advice for each month</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+               <h4 style="border: #f9f9f9;background-color: rgb(104, 107, 107);text-align: center;color: rgb(248, 246, 246);">MONTHS</h4>
+               <br>
+               <input type="text" id="monthSearch" onkeyup="filterMonths()" placeholder="Search for months..." class="form-control mb-4">
+               <div id="monthList">
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='1st month') }}">
+                        <h5 class="faq-question text-primary">1st Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='2nd month') }}">
+                        <h5 class="faq-question text-primary">2nd Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='3rd month') }}">
+                        <h5 class="faq-question text-primary">3rd Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='4th month') }}">
+                        <h5 class="faq-question text-primary">4th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='5th month') }}">
+                        <h5 class="faq-question text-primary">5th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='6th month') }}">
+                        <h5 class="faq-question text-primary">6th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='7th month') }}">
+                        <h5 class="faq-question text-primary">7th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='8th month') }}">
+                        <h5 class="faq-question text-primary">8th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='9th month') }}">
+                        <h5 class="faq-question text-primary">9th Month</h5>
+                    </a>
+                </div>
+                <hr>
+                <div class="faq-item mb-4">
+                    <a href="{{ url_for('user_month_by_month', month='10th month') }}">
+                        <h5 class="faq-question text-primary">10th Month</h5>
+                    </a>
+                </div>
+                <hr>
+            </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Function to filter months based on search input
+    function filterMonths() {
+        var input, filter, monthList, months, i, txtValue;
+        input = document.getElementById('monthSearch');
+        filter = input.value.toLowerCase();
+        monthList = document.getElementById("monthList");
+        months = monthList.getElementsByClassName('faq-item');
+
+        // Loop through all months and hide those that don't match the search query
+        for (i = 0; i < months.length; i++) {
+            txtValue = months[i].textContent || months[i].innerText;
+            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                months[i].style.display = "";
+            } else {
+                months[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

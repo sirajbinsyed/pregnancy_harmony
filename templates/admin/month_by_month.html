@@ -1,0 +1,96 @@
+{% extends "./admin/base.html" %}
+{% block content %}
+<main class="dash-content">
+    <div class="container-fluid">
+        <div class="row dash-row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="easion-card-title">Add/Edit Monthly Tips Form</div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Form for adding/updating monthly tips -->
+                        <form method="POST" action="/admin-month-by-month">
+                            <input type="hidden" name="id" value="{{ tips_to_edit.id if tips_to_edit else '' }}">
+                            <div class="form-group">
+                                <label for="month">Month</label>
+                                <select class="form-control" id="month" name="month" required>
+                                    <option value="">Select a month</option>
+                                    <option value="1st month" {% if tips_to_edit and tips_to_edit.month == "1st month" %}selected{% endif %}>1st month</option>
+                                    <option value="2nd month" {% if tips_to_edit and tips_to_edit.month == "2nd month" %}selected{% endif %}>2nd month</option>
+                                    <option value="3rd month" {% if tips_to_edit and tips_to_edit.month == "3rd month" %}selected{% endif %}>3rd month</option>
+                                    <option value="4th month" {% if tips_to_edit and tips_to_edit.month == "4th month" %}selected{% endif %}>4th month</option>
+                                    <option value="5th month" {% if tips_to_edit and tips_to_edit.month == "5th month" %}selected{% endif %}>5th month</option>
+                                    <option value="6th month" {% if tips_to_edit and tips_to_edit.month == "6th month" %}selected{% endif %}>6th month</option>
+                                    <option value="7th month" {% if tips_to_edit and tips_to_edit.month == "7th month" %}selected{% endif %}>7th month</option>
+                                    <option value="8th month" {% if tips_to_edit and tips_to_edit.month == "8th month" %}selected{% endif %}>8th month</option>
+                                    <option value="9th month" {% if tips_to_edit and tips_to_edit.month == "9th month" %}selected{% endif %}>9th month</option>
+                                    <option value="10th month" {% if tips_to_edit and tips_to_edit.month == "10th month" %}selected{% endif %}>10th month</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tittle">Title</label>
+                                <input type="text" class="form-control" id="tittle" name="tittle" 
+                                       value="{{ tips_to_edit.title if tips_to_edit else '' }}" 
+                                       placeholder="Enter the title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" 
+                                          placeholder="Enter the description" rows="4" required>{{ tips_to_edit.description if tips_to_edit else '' }}</textarea>
+                            </div>
+                            <button id="submit" type="submit" class="btn btn-primary" style="margin: 15px;">{{ 'Update' if tips_to_edit else 'Submit' }}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table to list monthly tips -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="easion-card-title">Monthly Tips Table</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-in-card">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Month</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tip in tips %}
+                                <tr>
+                                    <td>{{ tip.id }}</td>
+                                    <td>{{ tip.month }}</td>
+                                    <td>{{ tip.title }}</td>
+                                    <td>{{ tip.description }}</td>
+                                    <td>
+                                        <a href="{{ url_for('adminmonthbymonth', edit=tip.id) }}" class="btn btn-info btn-sm">Edit</a>
+                                        <form action="{{ url_for('delete_tip', id=tip.id) }}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

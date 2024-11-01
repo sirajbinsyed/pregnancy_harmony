@@ -1,0 +1,95 @@
+{% extends "./admin/base.html" %}
+{% block content %}
+<style>
+    
+    .admin-message {
+        text-align: right;
+        background-color: #f0f8ff; 
+        padding: 10px;
+        border-radius: 10px; 
+        margin-bottom: 10px; 
+        display: inline-block; 
+        width: 100%;
+    }
+    .user-message {
+        text-align: left; 
+        background-color: #e6e6e6; 
+        padding-top: 20px;
+        padding: 10px;
+        border-radius: 10px; 
+        margin-bottom: 10px; 
+        display: inline-block;
+        width: 100%;
+    }
+    .timestamp {
+        display: block; 
+        text-align: center; 
+        margin-top: 5px; 
+        font-size: x-small;
+    }
+</style>
+<main class="dash-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-title">Enquiry Details</div>
+                    </div>
+                    <div class="card-body">
+                        <h5>User: {{ enquiry.user_name }} (Age: {{ enquiry.user_age }})</h5>
+                        <h6>Category: {{ enquiry.category_name }}</h6>
+                        <p><strong>Subject:</strong> {{ enquiry.subject }}</p>
+                        <p><strong>Enquiry:</strong> {{ enquiry.enquiry }}</p>
+                        <a href="{{ url_for('close_enquiry', enquiry_id=enquiry.enquiry_id) }}" class="btn btn-danger btn-sm">Close Enquiry</a>
+                    </div>
+                </div>
+
+                <!-- Chat Section -->
+                <div class="card easion-card mt-4">
+                    <div class="card-header">
+                        <div class="easion-card-title">Chat</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-box" style="max-height: 400px; overflow-y: scroll;">
+                            {% for message in chat_messages %}
+                            <div class="chat-message">
+                                {% if message.type == 'admin' %}
+                                <div class="admin-message text-right">
+                                    <p><strong>You:  </strong>{{ message.reply }}</p>
+                                    <span class="timestamp" >{{ message.created_on }}</span>
+                                </div>
+                                {% else %}
+                                <div class="user-message">
+                                    <p><strong>{{ enquiry.user_name }}:</strong> {{ message.reply }}</p>
+                                    <span class="timestamp">{{ message.created_on }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reply Form -->
+                <div class="card easion-card mt-4">
+                    <div class="card-header">
+                        <div class="easion-card-title">Send a Reply</div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/reply_enquiry" method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="enquiry_id" value="{{enquiry.enquiry_id}}">
+                                <label for="reply">Your Reply</label>
+                                <textarea name="reply" id="reply" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Reply</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

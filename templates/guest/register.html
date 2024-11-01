@@ -1,0 +1,64 @@
+{% extends "./guest/base.html" %}
+{% block content %}
+            
+            <section class="section-padding" id="booking">
+                <div class="container">
+                    <div class="row">
+                    
+                        <div class="col-lg-8 col-12 mx-auto">
+                            <div class="booking-form">
+                                
+                                <h2 class="text-center mb-lg-3 mb-2">Register</h2>
+                            
+                                <form  action="/register" method="post">
+                                  
+                                    <div class="row">
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Full name" required>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <textarea name="address" id="address"  class="form-control"  placeholder="Address here..." required></textarea>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone" required>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="email" name="gmail" id="gmail" class="form-control" placeholder="Gmail" required>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="number" name="age" id="age" class="form-control" placeholder="Age" required>
+                                        </div>
+                                        <div class="col-lg-6 col-12">
+                                            <input type="text" name="blood" id="blood" class="form-control" placeholder="Blood group" required>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="text" name="username" id="username" class="form-control" placeholder="User name" required>
+                                        </div>
+
+                                        <div class="col-lg-6 col-12">
+                                            <input type="password" name="password" id="password"  class="form-control" placeholder="Password" required>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-6 mx-auto">
+                                            <button type="submit" class="form-control" id="submit-button">Register</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+       
+           {% endblock %}

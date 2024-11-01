@@ -1,0 +1,87 @@
+{% extends "./user/base.html" %}
+{% block content %}
+<main class="dash-content">
+    <div class="container-fluid">
+        <div class="row dash-row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="easion-card-title">Add Enquiry Form</div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Form for adding/updating enquiry -->
+                        <form method="post" action="/user-enquiry">
+                            <div class="form-group">
+                                <label for="category_id">Category</label>
+                                <select class="form-control" id="category_id" name="category_id" required>
+                                    <option value="">Select a category</option>
+                                    {% for category in select_category %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" class="form-control" id="subject" name="subject" 
+                                       value="" 
+                                       placeholder="Enter the subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="enquiry">Enquiry</label>
+                                <textarea class="form-control" id="enquiry" name="enquiry" 
+                                          placeholder="Enter the enquiry details" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table to list enquiries -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-icon">
+                            <i class="fas fa-table"></i>
+                        </div>
+                        <div class="easion-card-title">Pending Enquiries</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-in-card">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Enquiry ID</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Enquiry</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for enquiry in enquiries %}
+                                <tr>
+                                    <th scope="row">{{ enquiry.enquiry_id }}</th>
+                                    <td>{{ enquiry.category_name }}</td>
+                                    <td>{{ enquiry.subject }}</td>
+                                    <td>{{ enquiry.enquiry }}</td>
+                                    <td>
+                                        
+                                        <a href="{{ url_for('user_reply', enquiry_id=enquiry.enquiry_id) }}" class="btn btn-info btn-sm">View Reply</a>
+
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "./user/base.html" %}
+{% block content %}
+<style>
+    
+    .user-message {
+        text-align: right;
+        background-color: #f0f8ff; 
+        padding: 10px;
+        border-radius: 10px; 
+        margin-bottom: 10px; 
+        display: inline-block; 
+        width: 100%;
+    }
+    .admin-message {
+        text-align: left; 
+        background-color: #e6e6e6; 
+        padding-top: 20px;
+        padding: 10px;
+        border-radius: 10px; 
+        margin-bottom: 10px; 
+        display: inline-block;
+        width: 100%;
+    }
+    .timestamp {
+        display: block; 
+        text-align: center; 
+        margin-top: 5px; 
+        font-size: x-small;
+    }
+</style>
+<main class="dash-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card easion-card">
+                    <div class="card-header">
+                        <div class="easion-card-title">Enquiry Details</div>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>category : </strong> {{ enquiry.category_name }}</p>
+                        <p><strong>Subject : </strong> {{ enquiry.subject }}</p>
+                        <p><strong>Enquiry : </strong> {{ enquiry.enquiry }}</p>
+                    </div>
+                </div>
+
+                <!-- Chat Section -->
+                <div class="card easion-card mt-4">
+                    <div class="card-header">
+                        <div class="easion-card-title">Chat</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-box" style="max-height: 400px; overflow-y: scroll;">
+                        {% if chat_messages %}
+                            {% for message in chat_messages %}
+                            <div class="chat-message">
+                                {% if message.type == 'admin' %}
+                                <div class="admin-message">
+                                    <p><strong>Admin:  </strong>{{ message.reply }}</p>
+                                    <span class="timestamp" >{{ message.created_on }}</span>
+                                </div>
+                                {% else %}
+                                <div class="user-message text-right">
+                                    <p><strong>You:</strong> {{ message.reply }}</p>
+                                    <span class="timestamp">{{ message.created_on }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="no-response-message">
+                                <p><strong>Admin has not responded. Please wait for a response.</strong></p>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                {% if chat_messages %}
+                <!-- Reply Form -->
+                <div class="card easion-card mt-4">
+                    <div class="card-header">
+                        <div class="easion-card-title">Send a Reply</div>
+                    </div>
+                    <div class="card-body">
+                        <form action="/user_reply" method="POST">
+                            <div class="form-group">
+                                <input type="hidden" name="enquiry_id" value="{{enquiry.enquiry_id}}">
+                                <label for="reply">Your Reply</label>
+                                <textarea name="reply" id="reply" class="form-control" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Reply</button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
